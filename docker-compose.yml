@@ -1,0 +1,53 @@
+version: '3.1'
+services:
+  users-service:
+    image: node
+    ports:
+     - "80:8123"
+    volumes:
+     - ./service:/app
+    command:
+     /app/init.sh
+    depends_on:
+     - db
+    environment:
+     DATABASE_HOST: db
+     MYSQL_PASSWORD_FILE: /run/secrets/mysql_password
+    secrets:
+     - mysql_password
+    deploy:
+      replicas: 4
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    networks:
+     internal:
+  db:
+    image: mysql
+    volumes:
+     - ~/var/lib/mysql:/var/lib/mysql
+     - ./db:/docker-entrypoint-initdb.d
+    environment:
+     MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
+     MYSQL_DATABASE: trucraft
+     MYSQL_USER: trucraft_service
+     MYSQL_PASSWORD_FILE: /run/secrets/mysql_password
+    secrets:
+     - mysql_password
+     - mysql_root_password
+    networks:
+     internal:
+
+#volumes:
+#  db_data:
+
+secrets:
+ mysql_password:
+  external: true
+ mysql_root_password:
+  external: true
+
+networks:
+ internal:
