@@ -10,11 +10,7 @@ module.exports = (app, options) => {
 	app.get('/backpack', (req, res, next) => {
 		options.repository.getBackpack().then((backpacks) => {
 			res.status(200).send(backpacks.map((backpack) => {
-				return {
-					username: backpack.username,
-					timestamp: backpack.timestamp,
-					hostname: process.env.HOSTNAME
-				};
+				return backpack;
 			}));
 		})
 			.catch(next);
@@ -37,7 +33,6 @@ module.exports = (app, options) => {
 			if(!backpack) {
 				res.status(404).send('Backpack not found for user ' + username + '.');
 			} else {
-				backpack.hostname = process.env.HOSTNAME;
 				res.status(200).send(backpack);
 			}
 		})

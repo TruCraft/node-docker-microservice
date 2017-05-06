@@ -13,7 +13,7 @@ class Repository {
 		this.connectionSettings = connectionSettings;
 		this.connection = mysql.createConnection(this.connectionSettings);
 	}
-	
+
 	getBackpack() {
 		return new Promise((resolve, reject) => {
 
@@ -66,7 +66,8 @@ class Repository {
 			return {
 				username: backpack.username,
 				timestamp: backpack.timestamp,
-				backpack_json: backpack.backpack_json
+				backpack_json: backpack.backpack_json,
+				hostname: process.env.HOSTNAME
 			};
 		}
 	}
