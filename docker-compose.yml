@@ -3,7 +3,7 @@ services:
   service:
     image: node
     ports:
-     - "80:8123"
+     - "8123:8123"
     volumes:
      - ./service:/app
     command:
