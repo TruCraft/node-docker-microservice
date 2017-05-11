@@ -18,8 +18,8 @@ module.exports.start = (options) => {
 		app.use(morgan('dev'));
 
 		// Configure express to use body-parser as middle-ware.
-		app.use(bodyParser.urlencoded({ extended: true }));
-		app.use(bodyParser.json());
+		app.use(bodyParser.urlencoded({ extended: true, limit:'50mb' }));
+		app.use(bodyParser.json({limit:'50mb'}));
 
 		//  Add the APIs to the app.
 		require('../api/backpack')(app, options);
